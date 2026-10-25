@@ -1,0 +1,18 @@
+---
+- name: Install Memcached and python client
+  ansible.builtin.apt:
+    name:
+      - memcached
+      - python3-memcache
+    state: present
+- name: Configure Memcached listen address
+  ansible.builtin.lineinfile:
+    path: /etc/memcached.conf
+    regexp: '^-l '
+    line: '-l 0.0.0.0'
+
+- name: Restart and enable Memcached
+  ansible.builtin.service:
+    name: memcached
+    state: restarted
+    enabled: true
