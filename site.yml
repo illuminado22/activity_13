@@ -1,0 +1,17 @@
+---
+- name: Install OpenStack Prerequisites on Controller Nodes
+  hosts: controller
+  become: true
+  roles:
+    - role: chrony
+      tags: ntp
+    - role: openstack_repo
+      tags: repo
+    - role: database
+      tags: db
+    - role: rabbitmq
+      tags: mq
+    - role: memcached
+      tags: cache
+    - role: etcd
+      tags: etcd
