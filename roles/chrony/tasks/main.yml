@@ -1,0 +1,6 @@
+---
+- name: Install chrony time synchronization service
+  ansible.builtin.apt:
+    name: chrony
+    state: present
+    update_cache: yes
