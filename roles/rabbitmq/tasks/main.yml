@@ -1,0 +1,21 @@
+---
+- name: Install RabbitMQ server
+  ansible.builtin.apt:
+    name: rabbitmq-server
+    state: present
+
+- name: Ensure RabbitMQ is running and enabled
+  ansible.builtin.service:
+    name: rabbitmq-server
+    state: started
+    enabled: true
+- name: Create OpenStack RabbitMQ user
+  ansible.builtin.command:
+    cmd: rabbitmqctl add_user openstack openstack_password
+  register: rmq_user
+  failed_when: rmq_user.rc != 0 and 'already exists' not in rmq_user.stderr
+  changed_when: "'already exists' not in rmq_user.stderr"
+
+- name: Set permissions for OpenStack user
+  ansible.builtin.command:
+    cmd: rabbitmqctl set_permissions openstack ".*" ".*" ".*"
