@@ -1,0 +1,25 @@
+---
+- name: Install etcd
+  ansible.builtin.apt:
+    name: etcd
+    state: present
+- name: Configure etcd service
+  ansible.builtin.copy:
+    dest: /etc/default/etcd
+    content: |
+      ETCD_NAME="controller"
+      ETCD_DATA_DIR="/var/lib/etcd/default/controller.etcd"
+      ETCD_LISTEN_PEER_URLS="http://0.0.0.0:2380"
+      ETCD_LISTEN_CLIENT_URLS="http://0.0.0.0:2379"
+      ETCD_INITIAL_ADVERTISE_PEER_URLS="http://{{ ansible_default_ipv4.address }}:2380"
+      ETCD_INITIAL_CLUSTER="controller=http://{{ ansible_default_ipv4.address }}:2380"
+      ETCD_INITIAL_CLUSTER_TOKEN="etcd-cluster-01"
+      ETCD_INITIAL_CLUSTER_STATE="new"
+      ETCD_ADVERTISE_CLIENT_URLS="http://{{ ansible_default_ipv4.address }}:2379"
+    mode: '0644'
+
+- name: Restart and enable etcd
+  ansible.builtin.service:
+    name: etcd
+    state: restarted
+    enabled: true
