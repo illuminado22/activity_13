@@ -1,0 +1,15 @@
+---
+- name: Install software-properties-common
+  ansible.builtin.apt:
+    name: software-properties-common
+    state: present
+
+- name: Add OpenStack Cloud Archive repository
+  ansible.builtin.apt_repository:
+    repo: "cloud-archive:caracal"
+    state: present
+    update_cache: yes
+
+- name: Upgrade packages to match OpenStack release
+  ansible.builtin.apt:
+    upgrade: dist
