@@ -8,4 +8,6 @@ all:
 
     compute:
       hosts:
-        ubuntu1:D
+        ubuntu2:
+          ansible_host: 192.168.56.103
+          ansible_user: server-2
