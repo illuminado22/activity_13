@@ -8,5 +8,4 @@ all:
 
     compute:
       hosts:
-        # Kept empty or mapped to the same node for multi-group testing
-        ubuntu1:
+        ubuntu1:D
